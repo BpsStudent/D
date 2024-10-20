@@ -1,0 +1,54 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 8B - Social Studies</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Loading screen -->
+    <div id="loading" class="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Homepage Section -->
+        <section id="homepage" class="homepage">
+            <header>
+                <h1>Class 8B Social Studies Hub</h1>
+                <p>Click the button below to explore Social Studies branches.</p>
+            </header>
+            <button class="btn" onclick="showBranches()">Explore Social Studies</button>
+        </section>
+
+        <!-- Social Studies Branch Selection -->
+        <section id="social-studies-selection" class="selection hidden">
+            <button class="back-btn" onclick="goBack('homepage')">Back to Home</button>
+            <h2>Social Studies: Choose a Branch</h2>
+            <div class="subject-grid">
+                <div class="subject" onclick="loadField('geography')">Geography</div>
+                <div class="subject" onclick="loadField('civics')">Civics</div>
+                <div class="subject" onclick="loadField('history')">History</div>
+            </div>
+        </section>
+
+        <!-- Chapter Selection Section -->
+        <section id="chapter-selection" class="selection hidden">
+            <button class="back-btn" onclick="goBack('social-studies-selection')">Back to Social Studies</button>
+            <h2>Select a Chapter</h2>
+            <div id="chapter-list" class="chapter-grid"></div>
+        </section>
+
+        <!-- Chapter Download Section -->
+        <section id="download-section" class="hidden">
+            <button class="back-btn" onclick="goBack('chapter-selection')">Back to Chapters</button>
+            <h2 id="chapter-title"></h2>
+            <a id="download-link" class="btn" href="#" target="_blank">Download Chapter</a>
+            <p id="not-uploaded-message" class="hidden">This chapter is not uploaded yet. Please check back later.</p>
+        </section>
+    </div>
+</body>
+</html>

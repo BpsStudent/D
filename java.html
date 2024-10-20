@@ -1,0 +1,107 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><script>document.addEventListener("DOMContentLoaded", () => {
+    // DOM Elements
+    const loadingScreen = document.getElementById('loading');
+    const homepage = document.getElementById('homepage');
+    const socialStudiesSelection = document.getElementById('social-studies-selection');
+    const chapterSelection = document.getElementById('chapter-selection');
+    const chapterList = document.getElementById('chapter-list');
+    const downloadSection = document.getElementById('download-section');
+    const downloadLink = document.getElementById('download-link');
+    const notUploadedMessage = document.getElementById('not-uploaded-message');
+    const chapterTitle = document.getElementById('chapter-title');
+
+    // Show loading screen and hide it after 2 seconds, then execute the callback
+    const showLoading = (callback) => {
+        loadingScreen.style.display = 'flex'; // Display loading spinner
+        setTimeout(() => {
+            loadingScreen.style.display = 'none'; // Hide loading spinner after 2 seconds
+            if (callback) callback(); // Execute callback after loading completes
+        }, 2000);
+    };
+
+    // Show the Social Studies branches when the "Explore Social Studies" button is clicked
+    window.showBranches = () => {
+        showLoading(() => {
+            homepage.classList.add('hidden'); // Hide the homepage
+            socialStudiesSelection.classList.remove('hidden'); // Show Social Studies branches
+        });
+    };
+
+    // Load chapters for a specific Social Studies branch (Geography, Civics, History)
+    window.loadField = (field) => {
+        showLoading(() => {
+            socialStudiesSelection.classList.add('hidden'); // Hide Social Studies branch selection
+            loadChapters(field); // Load chapters for the selected field
+        });
+    };
+
+    // Load the available chapters for the selected field
+    const loadChapters = (field) => {
+        chapterSelection.classList.remove('hidden'); // Show chapter selection screen
+        chapterList.innerHTML = ''; // Clear any existing chapters
+        const chapters = getChaptersForField(field); // Get chapters for the selected field
+
+        // Dynamically create chapter items based on available data
+        chapters.forEach(chapter => {
+            const chapterItem = document.createElement('div');
+            chapterItem.textContent = `Chapter ${chapter.number}`;
+            chapterItem.classList.add('chapter-item');
+            chapterItem.onclick = () => {
+                showLoading(() => {
+                    displayChapterDetails(chapter); // Show the chapter details
+                });
+            };
+            chapterList.appendChild(chapterItem); // Add chapter item to the list
+        });
+    };
+
+    // Get the list of chapters for each branch
+    const getChaptersForField = (field) => {
+        // Define chapters for each field (currently only Civics has an uploaded chapter)
+        if (field === 'civics') {
+            return [
+                {
+                    number: 8,
+                    uploaded: true,
+                    link: 'https://www.mediafire.com/file/0999pkbnifss6ce/Ch-_8_Economic_presence_of_the_government_-1.pdf/file?dkey=5rsg7pauata&r=1671'
+                }
+            ];
+        } else {
+            return [
+                { number: 1, uploaded: false },
+                { number: 2, uploaded: false }
+            ];
+        }
+    };
+
+    // Display chapter details (whether a chapter is uploaded or not)
+    const displayChapterDetails = (chapter) => {
+        downloadSection.classList.remove('hidden'); // Show the download section
+        chapterTitle.textContent = `Chapter ${chapter.number}`; // Set the title for the chapter
+        if (chapter.uploaded) {
+            downloadLink.href = chapter.link; // Set the link to the uploaded file
+            downloadLink.style.display = 'inline-block'; // Show the download button
+            notUploadedMessage.classList.add('hidden'); // Hide the "not uploaded" message
+        } else {
+            downloadLink.style.display = 'none'; // Hide the download button
+            notUploadedMessage.classList.remove('hidden'); // Show the "not uploaded" message
+        }
+    };
+
+    // Function to handle back navigation
+    window.goBack = (previousSectionId) => {
+        showLoading(() => {
+            // Hide all sections
+            homepage.classList.add('hidden');
+            socialStudiesSelection.classList.add('hidden');
+            chapterSelection.classList.add('hidden');
+            downloadSection.classList.add('hidden');
+
+            // Show the previous section (e.g., homepage, social-studies-selection, etc.)
+            document.getElementById(previousSectionId).classList.remove('hidden');
+        });
+    };
+
+    // Initial loading screen hide after 2 seconds on page load
+    showLoading(); // Show the loading screen at the start
+});</script>
